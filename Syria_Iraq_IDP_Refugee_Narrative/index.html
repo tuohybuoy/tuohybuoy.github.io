@@ -1,0 +1,626 @@
+<!-- Final project for CS 416, Summer 2020, University of Illinois at Urbana-Champaign. Author: Kurt Tuohy -->
+<!-- A "martini glass" narrative visualization that describes and explores Syrian and Iraqi displaced persons, and refugees between the two countries. -->
+<!DOCTYPE html>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<html lang="en-US">
+<!-- BOOKMARK: how to center a button in a div: https://www.w3schools.com/howto/howto_css_center_button.asp -->
+<head>
+	<meta charset="utf-8">
+	<title>Syria and Iraq: Two Decades of Displacement</title>
+	<meta name="viewport" content="width=device-width">
+	<style>
+		* { font-family: Arial, sans-serif; }
+		.main_title {
+			width: 800px;
+			text-align: center;
+			font-size: 1.75em;
+		}
+		.subtitle {
+			width: 800px;
+			text-align: center;
+			font-size: 1.25em;
+			font-style: italic;
+		}
+		.narrative_visual_container {
+			width: 800px;
+			border: none;
+			border-collapse: collapse;
+			border-spacing: 0px;
+		}
+		.story_year_cell { height: 25px; vertical-align: middle; }
+		.story_year_div {
+			width: 100%;
+			height: 100%;
+			background-color: whitesmoke;
+			text-align: center;
+			vertical-align: middle;
+			font-size: 1.5em;
+		}
+		.story_points_cell { height: 100px; }
+		.annotation_div {
+			width: 100%;
+			height: 100%;
+			border-radius: 5px;
+			background-color: honeydew;
+			text-align: center;
+			vertical-align: middle;
+		}
+		.story_points_control_cell { height: 25px; vertical-align: middle; }
+		.story_points_control_div {
+			height: 100px;
+			position: relative;
+			border-radius: 5px;
+			background-color: honeydew;
+		}
+		.story_points_control_vertical_center_div {
+			margin: 0;
+			position: absolute;
+			top: 50%;
+			-ms-transform: translateY(-50%);
+  			transform: translateY(-50%);
+		}
+		.idp_cell, .idp_div, .idp_svg { width: 100px; height: 200px; margin: 0; padding: 0; }
+		.map_cell, .map_svg { width: 200px; height: 200px; margin: 0; padding: 0; }
+		.refugee_cell, .refugee_div, .refugee_svg { width: 200px; height: 100px; margin: 0; padding: 0; }
+		.idp_line { stroke: khaki; stroke-width: 15; }
+		.refugee_line { stroke: lightblue; stroke-width: 15; marker-end: url(#arrow); }
+		.arrow { fill: lightblue; }
+		.tooltip_div {
+			opacity: 0;
+			position: absolute;
+			text-align: center;
+			font-size: 0.75em;
+			padding: 5px;
+			background: white;
+			border: 1px solid;
+		}
+		.timeline_cell { height: 50px; }
+		.timeline_div { height: 50px; font-size: 0.75em; }
+		.year_slider {
+			-webkit-appearance: none;
+			width: 100%;
+			height: 25px;
+			border-radius: 5px;
+			display: inline;
+			background: whitesmoke;
+			}
+		.year_slider::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			appearance: none;
+			width: 25px;
+			height: 25px;
+			border-radius: 50%;
+			background-color: darkgray;
+			cursor: pointer;
+		}
+		.year_slider::-moz-range-thumb {
+			width: 25px;
+			height: 25px;
+			border-radius: 50%;
+			background-color: darkgray;
+			cursor: pointer;
+		}
+		.year_slider_ticks_div {
+			display: flex;
+			justify-content: space-between;
+			padding: 0 10px;
+		}
+		.year_slider_ticks_div p {
+			position: relative;
+			display: flex;
+			justify-content: center;
+			text-align: center;
+			width: 1px;
+			background: black;
+			height: 10px;
+			line-height: 40px;
+			margin: 0 0 20px 0;
+		}
+
+	</style>
+</head>
+
+<body onload="run_visualization()">
+
+<div class="main_title">Syria and Iraq: Two Decades of Displacement</div>
+<div class="subtitle">Refugees and Internally Displaced Persons, 2003-2020</div>
+<p> </p>
+<p> </p>
+
+<table class="narrative_visual_container">
+	<tr>
+		<td class="story_year_cell" id="story_year_cell" colspan="5">
+			<div class="story_year_div" id="story_year_div"></div>
+		</td>
+	</tr>
+	<tr id="story_points_row">
+		<td class="story_points_cell" id="story_points_cell" colspan="4">
+			<div class="annotation_div" id="annotation_div"></div>
+		</td>
+		<td class="story_points_control_cell" id="story_points_control_cell">
+			<div class="story_points_control_div" id="story_points_control_div">
+				<div class="story_points_control_vertical_center_div" id="story_points_control_vertical_center_div">
+					<input type="button" class="story_points_control_button" id="story_points_control_button" value="Continue">
+				</div>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="idp_cell" id="syria_idp_cell" rowspan="2">
+		<div class="idp_div", id="syria_idp_div">
+			<svg class="idp_svg" id="syria_idp_svg"></svg>
+			<div class="tooltip_div" id="syria_idp_tooltip_div"></div>
+		</div>
+		</td>
+		<td class="map_cell" id="syria_map_cell" rowspan="2">
+			<svg class="map_svg" id="syria_map_svg"></svg>
+		</td>
+		<td class="refugee_cell" id="syria_refugees_in_iraq_cell">
+			<div class="refugee_div", id="syria_refugees_in_iraq_div">
+				<svg class="refugee_svg" id="syria_refugees_in_iraq_svg">
+					<defs>
+						<marker class="arrow" id="arrow" markerWidth="5" markerHeight="5" refX="2" refY="3" orient="auto" markerUnits="strokeWidth">
+							<path d="M2,2 L2,4 L4,3 L2,2" />
+						</marker>
+					</defs>
+				</svg>
+				<div class="tooltip_div" id="syria_refugees_in_iraq_tooltip_div"></div>
+			</div>
+		</td>
+		<td class="map_cell" id="iraq_map_cell" rowspan="2">
+			<svg class="map_svg" id="iraq_map_svg"></svg>
+		</td>
+		<td class="idp_cell" id="iraq_idp_cell" rowspan="2">
+			<div class="idp_div", id="iraq_idp_div">
+				<svg class="idp_svg" id="iraq_idp_svg"></svg>
+				<div class="tooltip_div" id="iraq_idp_tooltip_div"></div>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="refugee_cell" id="iraq_refugees_in_syria_cell">
+			<div class="refugee_div", id="iraq_refugees_in_syria_div">
+				<svg class="refugee_svg" id="iraq_refugees_in_syria_svg"></svg>
+				<div class="tooltip_div" id="iraq_refugees_in_syria_tooltip_div"></div>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="timeline_cell" id="timeline_cell" colspan="5">
+			<div class="timeline_div" id="timeline_div">
+				<input type="range" class="year_slider" id="year_slider" list="year_slider_points" min="2003" max="2020" step="1" value="2003">
+				<!-- <label for="year_slider">Year</label> -->
+				<datalist class="year_slider_points" id="year_slider_points">
+				</datalist>
+				<div class="year_slider_ticks_div" id="year_slider_ticks_div"></div>
+			</div>
+		</td>
+	</tr>
+</table>
+
+<script>
+
+async function run_visualization() {
+	// First, pull complete data for visualization
+	var [base_data, map_data] = await Promise.all(
+		[
+			d3.csv("./syria_iraq_idp_refugee_data_story.csv"),
+			d3.json("./syria_iraq.geojson")
+		]);
+
+	// Coerce numeric strings to numbers
+	base_data.forEach(function(d) {
+		d.annotation_no = +d.annotation_no;
+		d.syria_idp = +d.syria_idp;
+		d.syria_refugees_in_iraq = +d.syria_refugees_in_iraq;
+		d.iraq_refugees_in_syria = +d.iraq_refugees_in_syria;
+		d.iraq_idp = +d.iraq_idp;
+	});
+
+	const map_width = 200,
+		map_height = 200,
+		margin = 25,
+		line_length = 150,
+		year_slider_axis_length = 750,
+		year_slider_axis_girth = 50,
+		active_color = "honeydew",
+		inactive_color = "whitesmoke",
+		transition_ms = 500;
+
+	// Begin at first story point. User will increment this as they move through the story.
+	var story_point_no = 1;
+	// Number of the last story point.
+	var final_story_point_no = d3.max(base_data, function(d) { return d.annotation_no; });
+
+	// First and last years in the data range.
+	var first_story_year = d3.min(base_data, function(d) { return d.year; });
+	var final_story_year = d3.max(base_data, function(d) { return d.year; });
+
+	// Get max refugee/IDP count from data.
+	// Will use this to help create scales.
+	var max_refugee_IDP_count = d3.max(
+		base_data,
+		function(d) {
+			return Math.max(d.syria_idp,
+			d.syria_refugees_in_iraq,
+			d.iraq_refugees_in_syria,
+			d.iraq_idp);
+		}
+	);
+
+	// Get array of story years for time slider
+	var year_array = base_data.map(function(d) { return d.year; });
+
+	// Create scales
+
+	// IDP is vertical scale
+	var idp_scale = d3.scaleLinear().domain([0, max_refugee_IDP_count]).range([line_length,0]);
+	// Syrian refugees in Iraq is left-to-right horizontal scale
+	var syria_refugees_in_iraq_scale = d3.scaleLinear().domain([0, max_refugee_IDP_count]).range([0,line_length]);
+	// Iraqi refugees in Syria is right-to-left horizontal scale
+	var iraq_refugees_in_syria_scale = d3.scaleLinear().domain([0, max_refugee_IDP_count]).range([line_length,0]);
+
+	// Tooltip variables
+	var syria_idp_tooltip = d3.select("#syria_idp_tooltip_div");
+	var syria_refugees_in_iraq_tooltip = d3.select("#syria_refugees_in_iraq_tooltip_div");
+	var iraq_refugees_in_syria_tooltip = d3.select("#iraq_refugees_in_syria_tooltip_div");
+	var iraq_idp_tooltip = d3.select("#iraq_idp_tooltip_div");
+
+	// Where to place Iraq and Syria, respectively
+	// In the svgs...
+	var map_coord_center = [map_width / 2, map_height / 2],
+		// And on the globe, using [longitude, latitude]
+		syria_gps_center = [38.473473, 35.033127],
+		syria_scale = 1200,
+		iraq_gps_center = [43.774956, 33.044586],
+		iraq_scale = 900;
+
+	// Maps and projections
+
+	var syria_projection = d3.geoMercator()
+		.rotate(-syria_gps_center)
+		.center(syria_gps_center)
+		.scale(syria_scale)
+		.translate(map_coord_center);
+
+	var iraq_projection = d3.geoMercator()
+		.rotate(-iraq_gps_center)
+		.center(iraq_gps_center)
+		.scale(iraq_scale)
+		.translate(map_coord_center);
+
+	// Get current value of the year slider
+	function get_year_slider_value() {
+		return document.getElementById("year_slider").value;
+	};
+
+	// Function to get row of data corresponding to current story point.
+	// If the viewer has moved past the story, return whichever year
+	// the time slider points to.
+	function get_cur_story_point() {
+		// If we're in the stem portion of the martini glass, return the
+		// current story point
+		if (story_point_no > 0) {
+			return base_data.filter(
+				function(d) {
+					return d.annotation_no == story_point_no;
+				}
+			)
+		}
+		// If we're in the alcoholic part of the martini glass, return the data
+		// matching the year that the time slider points to. 
+		else {
+			return base_data.filter(
+				function(d) {
+					return d.year == get_year_slider_value();
+				}
+			)
+		}
+		// console.log(story_point_no);
+	};
+
+	// Get # of next story point, if any exist. Otherwise return zero.
+	function increment_story_point_no() {
+		if (story_point_no < final_story_point_no) {
+			return ++story_point_no;
+		}
+		else {
+			story_point_no = 0;
+			return story_point_no;
+		}
+	};
+
+	// Initialize story objects: lines and arrows for IDP and refugee counts,
+	// and years for the time slider.
+
+	function init_story_objects() {
+
+		// Get data for first story point to help initialize data bars
+		var story_point_data = get_cur_story_point();
+
+		// Color the annotation div light green to indicate it's an active control.
+		d3.select("#annotation_div")
+		.style("background-color",active_color);
+
+		d3.select("#story_points_control_div")
+		.style("background-color",active_color);
+
+		// Set up button listener to handle click events.
+		d3.select("#story_points_control_button")
+		.on("click", go_to_next_story_point);
+		
+		// Display maps of Syria and Iraq
+
+		// Draw Syria map
+		d3.select("#syria_map_svg")
+			.selectAll("path")
+			.data(map_data.features.filter(function(d){ return d.properties.ADMIN == "Syria" }))
+			.enter()
+			.append("path")
+			.attr("fill", inactive_color)
+			.attr("d", d3.geoPath()
+				.projection(syria_projection)
+			)
+			.style("stroke", "black")
+
+		// Draw Iraq map
+		d3.select("#iraq_map_svg")
+			.selectAll("path")
+			.data(map_data.features.filter(function(d){ return d.properties.ADMIN == "Iraq" }))
+			.enter()
+			.append("path")
+			.attr("fill", "whitesmoke")
+			.attr("d", d3.geoPath()
+				.projection(iraq_projection)
+			)
+			.style("stroke", "black")
+
+		// Create and initialize lines for IDP and refugee counts.
+		// Enable tooltips.
+
+		// Internally displaced Syrians
+		d3.select("#syria_idp_svg")
+		.append("g")
+		.attr("transform", "translate("+margin+","+margin+")")
+		.selectAll("line")
+		.data(story_point_data)
+		.enter()
+		.append("line")
+		.attr("class","idp_line")
+		.attr("id","syria_idp_line")
+		.attr("x1", margin)
+		.attr("y1", idp_scale(0))
+		.attr("x2", margin)
+		.attr("y2", function(d) { return idp_scale(d.syria_idp); })
+		// .on("mouseover", function(d) { console.log("Syria IDP: " + d.syria_idp); })
+		.on("mouseover", function(d) {
+			syria_idp_tooltip
+			.style("opacity", 1)
+			.style("left",(d3.event.pageX)+"px")
+			.style("top",(d3.event.pageY)+"px")
+			.html("Internally displaced Syrians: " + d.syria_idp);
+		})
+		.on("mouseout", function(d) {
+			syria_idp_tooltip.style("opacity", 0);
+		});
+
+		// Syrian refugees in Iraq
+		d3.select("#syria_refugees_in_iraq_svg")
+		.append("g")
+		.attr("transform", "translate("+margin+","+margin+")")
+		.selectAll("line")
+		.data(story_point_data)
+		.enter()
+		.append("line")
+		.attr("class","refugee_line")
+		.attr("id","syria_refugees_in_iraq_line")
+		.attr("x1", margin)
+		.attr("y1", margin)
+		.attr("x2", function(d) { return margin + syria_refugees_in_iraq_scale(d.syria_refugees_in_iraq); })
+		.attr("y2", margin)
+		.on("mouseover", function(d) {
+			syria_refugees_in_iraq_tooltip
+			.style("opacity", 1)
+			.style("left",(d3.event.pageX)+"px")
+			.style("top",(d3.event.pageY)+"px")
+			.html("Syrian refugees in Iraq: " + d.syria_refugees_in_iraq);
+		})
+		.on("mouseout", function(d) {
+			syria_refugees_in_iraq_tooltip.style("opacity", 0);
+		});
+
+		// Iraqi refugees in Syria
+		d3.select("#iraq_refugees_in_syria_svg")
+		.append("g")
+		.attr("transform", "translate("+margin+","+margin+")")
+		.selectAll("line")
+		.data(story_point_data)
+		.enter()
+		.append("line")
+		.attr("class","refugee_line")
+		.attr("id","iraq_refugees_in_syria_line")
+		.attr("x1", line_length)
+		.attr("y1", margin)
+		.attr("x2", function(d) { return iraq_refugees_in_syria_scale(d.iraq_refugees_in_syria); })
+		.attr("y2", margin)
+		.on("mouseover", function(d) {
+			iraq_refugees_in_syria_tooltip
+			.style("opacity", 1)
+			.style("left",(d3.event.pageX)+"px")
+			.style("top",(d3.event.pageY)+"px")
+			.html("Iraqi refugees in Syria: " + d.iraq_refugees_in_syria);
+		})
+		.on("mouseout", function(d) {
+			iraq_refugees_in_syria_tooltip.style("opacity", 0);
+		});
+
+		// Internally displaced Iraqis
+		d3.select("#iraq_idp_svg")
+		.append("g")
+		.attr("transform", "translate("+margin+","+margin+")")
+		.selectAll("line")
+		.data(story_point_data)
+		.enter()
+		.append("line")
+		.attr("class","idp_line")
+		.attr("id","iraq_idp_line")
+		.attr("x1", margin)
+		.attr("y1", idp_scale(0))
+		.attr("x2", margin)
+		.attr("y2", function(d) { return idp_scale(d.iraq_idp); })
+		// .on("mouseover", function() { console.log("pageX: " + d3.event.pageX + "; pageY: " + d3.event.pageY); });
+		.on("mouseover", function(d) {
+			iraq_idp_tooltip
+			.style("opacity", 1)
+			.style("right",(d3.event.pageX)+"px")
+			.style("bottom",(d3.event.pageY)+"px")
+			.html("Internally displaced Iraqis: " + d.iraq_idp);
+		})
+		.on("mouseout", function(d) {
+			iraq_idp_tooltip.style("opacity", 0);
+		});
+
+		// Set min, max and initial values for year slider, and populate its value list.
+		// Also initialize the slider's label, and set its background color to "inactive"
+		// since the slider doesn't yet control the story.
+
+		d3.select("#year_slider")
+		.attr("min", first_story_year)
+		.attr("max", final_story_year)
+		.style("background",inactive_color);
+
+		d3.select("#year_slider_points")
+		.selectAll("option")
+		.data(base_data)
+		.enter()
+		.append("option")
+		.attr("value", function(d) { return d.year; })
+		.attr("label", function(d) { return d.year; })
+		.html(function(d) { return d.year; })
+
+
+		// Populate the slider ticks and axis labels.
+		// This workaround for terrible slider styling support comes from:
+		// https://stackoverflow.com/questions/33699852/show-tick-positions-in-custom-range-input
+
+		d3.select("#year_slider_ticks_div")
+		.selectAll("p")
+		.data(base_data)
+		.enter()
+		.append("p")
+		.html(function(d) { return d.year; });
+
+	};
+
+	// Display the current story point, if any.
+	// Otherwise display data corresponding to the time slider year.
+
+	function display_cur_story_point() {
+
+		// console.log("Story Point No: " + story_point_no);
+
+		var story_point_data = get_cur_story_point();	// Get data to display
+
+		// Set annotation text
+		d3.select("#story_year_div").html(story_point_data[0].year);
+		if (story_point_no > 0) {
+			d3.select("#annotation_div").html(story_point_data[0].annotation);
+		}
+
+		// If positioned at the final story point, change the text of the button
+		// control to indicate we're leaving the stem portion of the narrative.
+		// if (story_point_no == final_story_point_no) {
+		// 	d3.select("#story_points_control_button").value("Explore");
+		// }
+
+		// Set IDP and refugee bar data and lengths
+
+		d3.select("#syria_idp_line")
+		.data(story_point_data)
+		.transition()
+		.duration(transition_ms)
+		.attr("y2", idp_scale(story_point_data[0].syria_idp));
+
+		d3.select("#syria_refugees_in_iraq_line")
+		.data(story_point_data)
+		.transition()
+		.duration(transition_ms)
+		.attr("x2", margin + syria_refugees_in_iraq_scale(story_point_data[0].syria_refugees_in_iraq));
+
+		d3.select("#iraq_refugees_in_syria_line")
+		.data(story_point_data)
+		.transition()
+		.duration(transition_ms)
+		.attr("x2", function(d) { return iraq_refugees_in_syria_scale(story_point_data[0].iraq_refugees_in_syria); });
+
+		d3.select("#iraq_idp_line")
+		.data(story_point_data)
+		.transition()
+		.duration(transition_ms)
+		.attr("y2", idp_scale(story_point_data[0].iraq_idp));
+
+		// Set year on time slider if we're in the stem portion of the narrative
+		if (story_point_no > 0) {
+			d3.select("#year_slider")
+			.attr("value", story_point_data[0].year);
+		}
+
+	};
+
+	// Go to the next story point, if any.
+	// Otherwise get data for the year the time slider points to.
+
+	function go_to_next_story_point() {
+
+		if (story_point_no == final_story_point_no) {
+			switch_from_stem_to_glass();
+		}
+
+		increment_story_point_no();
+
+		display_cur_story_point();
+	};
+
+	// Switch from the "stem" portion of the Martini Glass narrative
+	// to the "glass" portion.
+
+	function switch_from_stem_to_glass() {
+
+		// Clear the annotation text and listener.
+		d3.select("#annotation_div")
+		.html("")
+		.style("height","0px")
+		.style("background-color", inactive_color);
+
+		d3.select("#story_points_cell")
+		.style("height","0px");
+
+		d3.select("#story_points_control_button")
+		.on("click", null)
+		.remove();
+
+		d3.select("#story_points_row")
+		//.exit()
+		.transition()
+		.duration(transition_ms)
+		.remove();
+
+		// Set up listener on the time slider, and set its background
+		// color to light green (active).
+		d3.select("#year_slider")
+		.style("background",active_color)
+		.on("change", display_cur_story_point);
+	};
+
+	// Kick off the story
+
+	init_story_objects();
+	display_cur_story_point();
+	
+};
+
+</script>
+
+</body>
+
+</html>
