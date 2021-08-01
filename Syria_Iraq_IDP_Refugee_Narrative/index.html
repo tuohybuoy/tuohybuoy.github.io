@@ -11,18 +11,18 @@
 	<style>
 		* { font-family: Arial, sans-serif; }
 		.main_title {
-			width: 800px;
+			width: 900px;
 			text-align: center;
 			font-size: 1.75em;
 		}
 		.subtitle {
-			width: 800px;
+			width: 900px;
 			text-align: center;
 			font-size: 1.25em;
 			font-style: italic;
 		}
 		.narrative_visual_container {
-			width: 800px;
+			width: 900px;
 			border: none;
 			border-collapse: collapse;
 			border-spacing: 0px;
@@ -56,12 +56,12 @@
 			margin: 0;
 			position: absolute;
 			top: 50%;
-			-ms-transform: translateY(-50%);
-  			transform: translateY(-50%);
+			-ms-transform: translateY(-50%, -50%);
+  			transform: translateY(-50%, -50%);
 		}
-		.idp_cell, .idp_div, .idp_svg { width: 100px; height: 200px; margin: 0; padding: 0; }
-		.map_cell, .map_svg { width: 200px; height: 200px; margin: 0; padding: 0; }
-		.refugee_cell, .refugee_div, .refugee_svg { width: 200px; height: 100px; margin: 0; padding: 0; }
+		.idp_cell, .idp_div, .idp_svg { width: 100px; height: 300px; margin: 0; padding: 0; }
+		.map_cell, .map_svg { width: 200px; height: 300px; margin: 0; padding: 0; }
+		.refugee_cell, .refugee_div, .refugee_svg { width: 300px; height: 150px; margin: 0; padding: 0; }
 		.idp_line { stroke: khaki; stroke-width: 15; }
 		.refugee_line { stroke: lightblue; stroke-width: 15; marker-end: url(#arrow); }
 		.arrow { fill: lightblue; }
@@ -218,10 +218,10 @@ async function run_visualization() {
 	});
 
 	const map_width = 200,
-		map_height = 200,
+		map_height = 300,
 		margin = 25,
-		line_length = 150,
-		year_slider_axis_length = 750,
+		line_length = 200,
+		year_slider_axis_length = 850,
 		year_slider_axis_girth = 50,
 		active_color = "honeydew",
 		inactive_color = "whitesmoke",
