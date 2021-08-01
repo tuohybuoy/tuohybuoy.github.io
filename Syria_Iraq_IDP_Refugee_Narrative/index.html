@@ -36,8 +36,8 @@
 			vertical-align: middle;
 			font-size: 1.5em;
 		}
-		.story_points_cell { height: 100px; }
-		.annotation_div {
+		.story_points_cell { height: 80px; }
+		.story_points_div {
 			width: 100%;
 			height: 100%;
 			border-radius: 5px;
@@ -45,9 +45,9 @@
 			text-align: center;
 			vertical-align: middle;
 		}
-		.story_points_control_cell { height: 25px; vertical-align: middle; }
+		.story_points_control_cell { height: 80px; vertical-align: middle; }
 		.story_points_control_div {
-			height: 100px;
+			height: 80px;
 			position: relative;
 			border-radius: 5px;
 			background-color: honeydew;
@@ -61,7 +61,7 @@
 		}
 		.idp_cell, .idp_div, .idp_svg { width: 100px; height: 300px; margin: 0; padding: 0; }
 		.map_cell, .map_svg { width: 200px; height: 300px; margin: 0; padding: 0; }
-		.refugee_cell, .refugee_div, .refugee_svg { width: 300px; height: 150px; margin: 0; padding: 0; }
+		.refugee_cell, .refugee_div, .refugee_svg { width: 300px; height: 100px; margin: 0; padding: 0; }
 		.idp_line { stroke: khaki; stroke-width: 15; }
 		.refugee_line { stroke: lightblue; stroke-width: 15; marker-end: url(#arrow); }
 		.arrow { fill: lightblue; }
@@ -73,6 +73,46 @@
 			padding: 5px;
 			background: white;
 			border: 1px solid;
+		}
+		.idp_annotation_cell {
+			width: 100px;
+			height: 50px;
+			margin: 0;
+			padding: 0;
+		}
+		.idp_annotation_div {
+			width: 100px;
+			height: 50px;
+			text-align: center;
+			vertical-align: top;
+			font-size: 0.75em;
+			color: gray;
+			opacity: 0;
+		}
+		.refugee_annotation_cell {
+			width: 300px;
+			height: 50px;
+			margin: 0;
+			padding: 0;
+		}
+		.syria_refugee_annotation_div {
+			width: 300px;
+			height: 50px;
+			display: table-cell;
+			text-align: left;
+			vertical-align: bottom;
+			font-size: 0.75em;
+			color: gray;
+			opacity: 0;
+		}
+		.iraq_refugee_annotation_div {
+			width: 300px;
+			height: 50px;
+			text-align: right;
+			vertical-align: top;
+			font-size: 0.75em;
+			color: gray;
+			opacity: 0;
 		}
 		.timeline_cell { height: 50px; }
 		.timeline_div { height: 50px; font-size: 0.75em; }
@@ -135,7 +175,7 @@
 	</tr>
 	<tr id="story_points_row">
 		<td class="story_points_cell" id="story_points_cell" colspan="4">
-			<div class="annotation_div" id="annotation_div"></div>
+			<div class="story_points_div" id="story_points_div"></div>
 		</td>
 		<td class="story_points_control_cell" id="story_points_control_cell">
 			<div class="story_points_control_div" id="story_points_control_div">
@@ -146,15 +186,29 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="idp_cell" id="syria_idp_cell" rowspan="2">
+		<td class="idp_cell" id="syria_idp_cell" rowspan="3">
 		<div class="idp_div", id="syria_idp_div">
 			<svg class="idp_svg" id="syria_idp_svg"></svg>
 			<div class="tooltip_div" id="syria_idp_tooltip_div"></div>
 		</div>
 		</td>
-		<td class="map_cell" id="syria_map_cell" rowspan="2">
+		<td class="map_cell" id="syria_map_cell" rowspan="4">
 			<svg class="map_svg" id="syria_map_svg"></svg>
 		</td>
+		<td class="refugee_annotation_cell" id="syria_refugee_annotation_cell">
+			<div class="syria_refugee_annotation_div" id="syria_refugee_annotation_div"></div>
+		</td>
+		<td class="map_cell" id="iraq_map_cell" rowspan="4">
+			<svg class="map_svg" id="iraq_map_svg"></svg>
+		</td>
+		<td class="idp_cell" id="iraq_idp_cell" rowspan="3">
+			<div class="idp_div", id="iraq_idp_div">
+				<svg class="idp_svg" id="iraq_idp_svg"></svg>
+				<div class="tooltip_div" id="iraq_idp_tooltip_div"></div>
+			</div>
+		</td>
+	</tr>
+	<tr>
 		<td class="refugee_cell" id="syria_refugees_in_iraq_cell">
 			<div class="refugee_div", id="syria_refugees_in_iraq_div">
 				<svg class="refugee_svg" id="syria_refugees_in_iraq_svg">
@@ -167,22 +221,24 @@
 				<div class="tooltip_div" id="syria_refugees_in_iraq_tooltip_div"></div>
 			</div>
 		</td>
-		<td class="map_cell" id="iraq_map_cell" rowspan="2">
-			<svg class="map_svg" id="iraq_map_svg"></svg>
-		</td>
-		<td class="idp_cell" id="iraq_idp_cell" rowspan="2">
-			<div class="idp_div", id="iraq_idp_div">
-				<svg class="idp_svg" id="iraq_idp_svg"></svg>
-				<div class="tooltip_div" id="iraq_idp_tooltip_div"></div>
-			</div>
-		</td>
 	</tr>
 	<tr>
-		<td class="refugee_cell" id="iraq_refugees_in_syria_cell">
+		<td class="iraq_refugees_in_syria_cell" id="iraq_refugees_in_syria_cell">
 			<div class="refugee_div", id="iraq_refugees_in_syria_div">
 				<svg class="refugee_svg" id="iraq_refugees_in_syria_svg"></svg>
 				<div class="tooltip_div" id="iraq_refugees_in_syria_tooltip_div"></div>
 			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="idp_annotation_cell" id="syria_idp_annotation_cell">
+			<div class="idp_annotation_div" id="syria_idp_annotation_div"></div>
+		</td>
+		<td class="refugee_annotation_cell" id="iraq_refugee_annotation_cell">
+			<div class="iraq_refugee_annotation_div" id="iraq_refugee_annotation_div"></div>
+		</td>
+		<td class="iraq_idp_annotation_cell" id="iraq_idp_annotation_cell">
+			<div class="idp_annotation_div" id="iraq_idp_annotation_div"></div>
 		</td>
 	</tr>
 	<tr>
@@ -210,7 +266,7 @@ async function run_visualization() {
 
 	// Coerce numeric strings to numbers
 	base_data.forEach(function(d) {
-		d.annotation_no = +d.annotation_no;
+		d.story_point_no = +d.story_point_no;
 		d.syria_idp = +d.syria_idp;
 		d.syria_refugees_in_iraq = +d.syria_refugees_in_iraq;
 		d.iraq_refugees_in_syria = +d.iraq_refugees_in_syria;
@@ -220,7 +276,7 @@ async function run_visualization() {
 	const map_width = 200,
 		map_height = 300,
 		margin = 25,
-		line_length = 200,
+		line_length = 250,
 		year_slider_axis_length = 850,
 		year_slider_axis_girth = 50,
 		active_color = "honeydew",
@@ -230,7 +286,7 @@ async function run_visualization() {
 	// Begin at first story point. User will increment this as they move through the story.
 	var story_point_no = 1;
 	// Number of the last story point.
-	var final_story_point_no = d3.max(base_data, function(d) { return d.annotation_no; });
+	var final_story_point_no = d3.max(base_data, function(d) { return d.story_point_no; });
 
 	// First and last years in the data range.
 	var first_story_year = d3.min(base_data, function(d) { return d.year; });
@@ -303,7 +359,7 @@ async function run_visualization() {
 		if (story_point_no > 0) {
 			return base_data.filter(
 				function(d) {
-					return d.annotation_no == story_point_no;
+					return d.story_point_no == story_point_no;
 				}
 			)
 		}
@@ -338,8 +394,8 @@ async function run_visualization() {
 		// Get data for first story point to help initialize data bars
 		var story_point_data = get_cur_story_point();
 
-		// Color the annotation div light green to indicate it's an active control.
-		d3.select("#annotation_div")
+		// Color the story-point div light green to draw viewer's attention.
+		d3.select("#story_points_div")
 		.style("background-color",active_color);
 
 		d3.select("#story_points_control_div")
@@ -521,10 +577,10 @@ async function run_visualization() {
 
 		var story_point_data = get_cur_story_point();	// Get data to display
 
-		// Set annotation text
+		// Set story-point text
 		d3.select("#story_year_div").html(story_point_data[0].year);
 		if (story_point_no > 0) {
-			d3.select("#annotation_div").html(story_point_data[0].annotation);
+			d3.select("#story_points_div").html(story_point_data[0].story_point_text);
 		}
 
 		// If positioned at the final story point, change the text of the button
@@ -565,6 +621,77 @@ async function run_visualization() {
 			.attr("value", story_point_data[0].year);
 		}
 
+		// In the "stem" portion of the narrative, when annotation text exists,
+		// display it and add a cell border. Otherwise remove the cell border.
+
+		if (story_point_no > 0) {
+
+			// Syrian IDPs
+
+			d3.select("#syria_idp_annotation_div")
+			.html(story_point_data[0].syria_idp_annotation)
+			.transition()
+			.duration(transition_ms)
+			.style("opacity",
+				function(d) {
+					if (story_point_data[0].syria_idp_annotation != "") {
+						return 1;
+					} else {
+						return 0;
+					}
+				}
+			);
+
+			// Syrian refugees in Iraq
+
+			d3.select("#syria_refugee_annotation_div")
+			.html(story_point_data[0].syria_refugees_in_iraq_annotation)
+			.transition()
+			.duration(transition_ms)
+			.style("opacity",
+				function(d) {
+					if (story_point_data[0].syria_refugees_in_iraq_annotation != "") {
+						return 1;
+					} else {
+						return 0;
+					}
+				}
+			);
+
+			// Iraqi refugees in Syria
+
+			d3.select("#iraq_refugee_annotation_div")
+			.html(story_point_data[0].iraq_refugees_in_syria_annotation)
+			.transition()
+			.duration(transition_ms)
+			.style("opacity",
+				function(d) {
+					if (story_point_data[0].iraq_refugees_in_syria_annotation != "") {
+						return 1;
+					} else {
+						return 0;
+					}
+				}
+			);
+
+			// Iraqi IDPs
+
+			d3.select("#iraq_idp_annotation_div")
+			.html(story_point_data[0].iraq_idp_annotation)
+			.transition()
+			.duration(transition_ms)
+			.style("opacity",
+				function(d) {
+					if (story_point_data[0].iraq_idp_annotation != "") {
+						return 1;
+					} else {
+						return 0;
+					}
+				}
+			);
+		};
+
+
 	};
 
 	// Go to the next story point, if any.
@@ -586,8 +713,22 @@ async function run_visualization() {
 
 	function switch_from_stem_to_glass() {
 
-		// Clear the annotation text and listener.
-		d3.select("#annotation_div")
+		// Clear annotations.
+
+		d3.selectAll(".idp_annotation_div")
+		.html("")
+		.style("opacity", 0);
+
+		d3.select("#syria_refugee_annotation_div")
+		.html("")
+		.style("opacity", 0);
+
+		d3.select("#iraq_refugee_annotation_div")
+		.html("")
+		.style("opacity", 0);
+
+		// Clear the story-point text and listener.
+		d3.select("#story_points_div")
 		.html("")
 		.style("height","0px")
 		.style("background-color", inactive_color);

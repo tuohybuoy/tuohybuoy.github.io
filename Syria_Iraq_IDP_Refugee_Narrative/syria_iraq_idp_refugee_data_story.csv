@@ -1,19 +1,19 @@
-﻿year,syria_refugees_in_iraq,syria_idp,iraq_refugees_in_syria,iraq_idp,annotation_no,annotation
-2003,643,0,2435,0,1,"It is the eve of the invasion and occupation of Iraq. Iraq and its neighbor Syria each face their own turmoil, but few Syrians or Iraqis are internally displaced (khaki) or are refugees in the other country (blue).<br />This is about to change.<br />Click the button to continue."
-2004,489,0,14391,0,0,
-2005,627,0,24874,1200000,0,
-2006,663,0,700000,1834368,0,
-2007,590,0,1500000,2385865,2,"Iraq's guerilla battles with its occupiers have led to much strife, as has violence between Sunnis and Shias.<br />1.5 million Iraqis have found official refuge in Syria, while the number of internally displaced Iraqis is near the decade's peak of 2.6 million."
-2008,534,0,1100000,2647251,0,
-2009,757,0,1050000,1552003,0,
-2010,254,0,1000000,1343568,0,
-2011,323,0,750000,1332382,0,
-2012,63586,2016500,471418,1131810,0,
-2013,212809,6520800,146200,954128,3,"Syria has been engulfed in multi-sided, multi-front civil war for two years. More than 6.5 million Syrians are internally displaced, and 200,000 have found refuge in Iraq as that country's own conflicts have wound down and its refugees have left Syria.<br />However, nearly one million Iraqis are still internally displaced."
-2014,234196,7632500,146200,3596356,0,
-2015,244642,6563462,18253,4403287,4,"The ISIL insurgency has expanded from Syria and captured the western third of Iraq, driving total displaced Iraqis to 4.4 million. ISIL also battles in eastern Syria as its civil war continues."
-2016,230836,6325978,16879,3604285,0,
-2017,247057,6150005,16325,2615988,0,
-2018,252526,6183920,15699,1802832,0,
-2019,245810,6146994,13311,1414632,0,
-2020,242163,6701972,12399,1224108,5,"Iraq has reconquered its territory from ISIL, although 1.2 million Iraqis are still internally displaced.<br />Though ISIL has been driven out of Syria, the civil war continues to leave 6.7 of its citizens internally displaced. Fewer than 250,000 have found refuge in Iraq.<br />Click the button to end this slideshow, and use the slider at bottom to explore the timeline."
+﻿year,syria_refugees_in_iraq,syria_idp,iraq_refugees_in_syria,iraq_idp,story_point_no,story_point_text,syria_refugees_in_iraq_annotation,syria_idp_annotation,iraq_refugees_in_syria_annotation,iraq_idp_annotation
+2003,643,0,2435,0,1,"It is the eve of the invasion and occupation of Iraq. Iraq and its neighbor Syria each face their own turmoil, but few Syrians or Iraqis are internally displaced (khaki) or are refugees in the other country (blue).<br />This is about to change.<br />Click the button to continue.",,,,
+2004,489,0,14391,0,0,,,,,
+2005,627,0,24874,1200000,0,,,,,
+2006,663,0,700000,1834368,0,,,,,
+2007,590,0,1500000,2385865,2,"Iraq's guerilla battles with its occupiers have led to much strife, as has violence between Sunnis and Shias.<br />1.5 million Iraqis have found official refuge in Syria, while the number of internally displaced Iraqis is near the decade's peak of 2.6 million.",,,1.5 million Iraqis have fled to Syria,2.4 Iraqis internally displaced
+2008,534,0,1100000,2647251,0,,,,,
+2009,757,0,1050000,1552003,0,,,,,
+2010,254,0,1000000,1343568,0,,,,,
+2011,323,0,750000,1332382,0,,,,,
+2012,63586,2016500,471418,1131810,0,,,,,
+2013,212809,6520800,146200,954128,3,"Syria has been engulfed in multi-sided, multi-front civil war for two years. More than 6.5 million Syrians are internally displaced, and 200,000 have found refuge in Iraq as that country's own conflicts have wound down and its refugees have left Syria.<br />However, nearly one million Iraqis are still internally displaced.","Only 213,000 Syrians have found refuge in Iraq",> 6.5 million Syrians internally displaced,"150,000 Iraqis still refugees in Syria","950,000 Iraqis still internally displaced"
+2014,234196,7632500,146200,3596356,0,,,,,
+2015,244642,6563462,18253,4403287,4,"The ISIL insurgency has expanded from Syria and captured the western third of Iraq, driving total displaced Iraqis to 4.4 million. ISIL also battles in eastern Syria as its civil war continues.",,,,4.4 million Iraqis internally displaced
+2016,230836,6325978,16879,3604285,0,,,,,
+2017,247057,6150005,16325,2615988,0,,,,,
+2018,252526,6183920,15699,1802832,0,,,,,
+2019,245810,6146994,13311,1414632,0,,,,,
+2020,242163,6701972,12399,1224108,5,"Iraq has reconquered its territory from ISIL, although 1.2 million Iraqis are still internally displaced.<br />Though ISIL has been driven out of Syria, the civil war continues to leave 6.7 of its citizens internally displaced. Fewer than 250,000 have found refuge in Iraq.<br />Click the button to end this slideshow, and use the slider at bottom to explore the timeline.","Only 242,000 Syrians are refugees in Iraq",6.7 million Syrians internally displaced,,1.2 million Iraqis still internally displaced
